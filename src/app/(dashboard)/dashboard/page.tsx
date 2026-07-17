@@ -1,90 +1,59 @@
 'use client';
 
-import Link from 'next/link';
-import { FiUsers, FiPlus, FiList, FiCpu } from 'react-icons/fi';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import React from 'react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
-import { useCompetitors } from '@/features/competitor/hooks/useCompetitor';
-import { useAudits } from '@/features/audit/hooks/useAudit';
+import { useDashboardStats } from '@/features/dashboard/hooks/useDashboard';
+import { DashboardStatsCards } from '@/features/dashboard/components/DashboardStatsCards';
+import { DashboardCharts } from '@/features/dashboard/components/DashboardCharts';
+import { DashboardRecentItems } from '@/features/dashboard/components/DashboardRecentItems';
+import { DashboardQuickActions } from '@/features/dashboard/components/DashboardQuickActions';
+import { FiAlertCircle } from 'react-icons/fi';
+import { Button } from '@/components/ui/Button';
 
 export default function DashboardHomePage() {
   const user = useAuthStore((s) => s.user);
-  const { data: competitorData } = useCompetitors({ page: 1, limit: 1 });
-  const { data: audits } = useAudits();
+  const { data: stats, isLoading, isError, refetch } = useDashboardStats();
+
+  if (isError) {
+    return (
+      <div className="flex h-[50vh] flex-col items-center justify-center space-y-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+          <FiAlertCircle className="h-6 w-6" />
+        </div>
+        <div className="text-center">
+          <h2 className="text-lg font-semibold">Failed to load dashboard</h2>
+          <p className="text-sm text-muted-foreground">There was a problem fetching your statistics.</p>
+        </div>
+        <Button variant="outline" onClick={() => refetch()}>
+          Try again
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8">
-      {/* Welcome */}
+    <div className="space-y-8 pb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Welcome Section */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">
           Welcome back{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Here&apos;s a quick overview of your TrendPulse workspace.
+          Here&apos;s a high-level overview of your TrendPulse workspace.
         </p>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total Competitors
-              </CardTitle>
-              <FiUsers className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">
-              {competitorData?.pagination.total ?? '—'}
-            </p>
-            <CardDescription className="mt-1">Tracked on the platform</CardDescription>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                AI Audit Reports
-              </CardTitle>
-              <FiCpu className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{audits?.length ?? '—'}</p>
-            <CardDescription className="mt-1">Reports generated</CardDescription>
-          </CardContent>
-        </Card>
-      </div>
+      {/* KPI Cards */}
+      <DashboardStatsCards stats={stats} isLoading={isLoading} />
 
-      {/* Quick actions */}
-      <div>
-        <h2 className="mb-4 text-lg font-semibold">Quick Actions</h2>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild>
-            <Link href="/dashboard/competitors/add" className="gap-2">
-              <FiPlus className="h-4 w-4" /> Add Competitor
-            </Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/competitors" className="gap-2">
-              <FiUsers className="h-4 w-4" /> Explore Competitors
-            </Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/competitors/manage" className="gap-2">
-              <FiList className="h-4 w-4" /> Manage Competitors
-            </Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/audits/new" className="gap-2">
-              <FiCpu className="h-4 w-4" /> New AI Audit
-            </Link>
-          </Button>
-        </div>
-      </div>
+      {/* Quick Actions */}
+      <DashboardQuickActions />
+
+      {/* Charts / Data Visualization */}
+      <DashboardCharts stats={stats} isLoading={isLoading} />
+
+      {/* Recent Items Lists */}
+      <DashboardRecentItems stats={stats} isLoading={isLoading} />
     </div>
   );
 }

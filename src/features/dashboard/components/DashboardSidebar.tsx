@@ -14,6 +14,7 @@ import {
   FiTrendingUp,
   FiFileText,
   FiCpu,
+  FiTarget,
 } from 'react-icons/fi';
 import { cn } from '@/utils/cn';
 import { useAuthStore } from '@/features/auth/store/auth.store';
@@ -37,6 +38,14 @@ const navItems = [
     children: [
       { href: '/dashboard/audits', label: 'Audit History', icon: FiFileText },
       { href: '/dashboard/audits/new', label: 'New Audit', icon: FiPlusCircle },
+    ],
+  },
+  {
+    label: 'AI Strategy',
+    icon: FiTarget,
+    children: [
+      { href: '/dashboard/strategies', label: 'My Strategies', icon: FiFileText },
+      { href: '/dashboard/strategies/new', label: 'Generate New', icon: FiPlusCircle },
     ],
   },
 ];

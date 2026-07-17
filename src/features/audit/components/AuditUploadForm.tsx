@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FiUploadCloud, FiFile, FiX, FiCheckCircle } from 'react-icons/fi';
+import { FiUploadCloud, FiFile, FiX, FiCheck } from 'react-icons/fi';
 import { generateAuditSchema, GenerateAuditInput } from '../schemas/audit.schema';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/utils/cn';
@@ -31,6 +31,7 @@ export function AuditUploadForm({ onSubmit, isPending, progress }: AuditUploadFo
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedFile = watch('file');
 
   const handleDrag = (e: React.DragEvent) => {
@@ -61,7 +62,7 @@ export function AuditUploadForm({ onSubmit, isPending, progress }: AuditUploadFo
   };
 
   const removeFile = () => {
-    setValue('file', undefined as any, { shouldValidate: true });
+    setValue('file', undefined as unknown as File, { shouldValidate: true });
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }

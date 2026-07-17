@@ -37,11 +37,11 @@ export const useGenerateAudit = () => {
           onProgress(percentCompleted);
         }
       }),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: AUDIT_KEYS.lists() });
       toast.success('AI Audit generated successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       let message = 'Failed to generate audit. Please try again.';
       if (error instanceof AxiosError) {
         message = error.response?.data?.message || message;

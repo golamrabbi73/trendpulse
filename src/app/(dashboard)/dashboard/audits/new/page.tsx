@@ -41,7 +41,7 @@ export default function NewAuditPage() {
         <CardHeader>
           <CardTitle>Generate AI Audit</CardTitle>
           <CardDescription>
-            Upload a competitor's financial report, SEC filing, or article. Our AI will analyze it and extract actionable insights.
+            Upload a competitor&apos;s financial report, SEC filing, or article. Our AI will analyze it and extract actionable insights.
           </CardDescription>
         </CardHeader>
         <CardContent>

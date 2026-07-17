@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Modal } from '@/components/ui/Modal';
+import { Strategy } from '@/features/strategy/types/strategy.types';
 import * as React from 'react';
 
 export default function StrategiesPage() {
@@ -82,7 +83,7 @@ export default function StrategiesPage() {
         />
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {strategies?.map((strategy) => (
+          {strategies?.map((strategy: Strategy) => (
             <StrategyCard
               key={strategy._id}
               strategy={strategy}

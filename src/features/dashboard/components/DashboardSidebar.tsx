@@ -15,6 +15,7 @@ import {
   FiFileText,
   FiCpu,
   FiTarget,
+  FiHome,
 } from 'react-icons/fi';
 import { cn } from '@/utils/cn';
 import { useAuthStore } from '@/features/auth/store/auth.store';
@@ -22,7 +23,8 @@ import { useLogout } from '@/features/auth/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: FiGrid, exact: true },
+  { href: '/', label: 'Home', icon: FiHome },
+  { href: '/dashboard', label: 'Dashboard', icon: FiGrid },
   {
     label: 'Competitors',
     icon: FiUsers,
@@ -54,13 +56,12 @@ interface NavItemProps {
   href: string;
   label: string;
   icon: React.ElementType;
-  exact?: boolean;
   onClick?: () => void;
 }
 
-function NavLink({ href, label, icon: Icon, exact, onClick }: NavItemProps) {
+function NavLink({ href, label, icon: Icon, onClick }: NavItemProps) {
   const pathname = usePathname();
-  const isActive = exact ? pathname === href : pathname.startsWith(href);
+  const isActive = pathname === href;
 
   return (
     <Link

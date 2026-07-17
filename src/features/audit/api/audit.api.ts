@@ -1,4 +1,5 @@
 import apiClient from '@/lib/api-client';
+import { AxiosProgressEvent } from 'axios';
 import { Audit } from '../types/audit.types';
 import { GenerateAuditInput } from '../schemas/audit.schema';
 
@@ -21,7 +22,7 @@ export const auditApi = {
     return res.data;
   },
 
-  generate: async (data: GenerateAuditInput, onUploadProgress?: (progressEvent: any) => void): Promise<Audit> => {
+  generate: async (data: GenerateAuditInput, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): Promise<Audit> => {
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('file', data.file);

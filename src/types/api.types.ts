@@ -2,13 +2,13 @@ export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
-  errors?: any;
+  errors?: Record<string, unknown>;
 }
 
 export interface ApiError {
   success: boolean;
   message: string;
-  errors?: any;
+  errors?: Record<string, unknown>;
 }
 
 export interface PaginatedData<T> {
@@ -19,4 +19,4 @@ export interface PaginatedData<T> {
   totalPages: number;
 }
 
-export interface PaginatedResponse<T> extends ApiResponse<PaginatedData<T>> {}
+export type PaginatedResponse<T> = ApiResponse<PaginatedData<T>>;

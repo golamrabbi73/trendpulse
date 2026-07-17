@@ -1,16 +1,18 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import * as React from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { ENV } from '@/constants/env';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(
+  const [queryClient] = React.useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000,
-            retry: 1,
+            staleTime: 1000 * 60 * 5, // 5 minutes
             refetchOnWindowFocus: false,
           },
         },
@@ -18,8 +20,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }

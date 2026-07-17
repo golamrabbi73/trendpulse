@@ -1,0 +1,80 @@
+'use client';
+
+import Link from 'next/link';
+import { FiPlus, FiFileText } from 'react-icons/fi';
+import { useAudits } from '@/features/audit/hooks/useAudit';
+import { AuditCard } from '@/features/audit/components/AuditCard';
+import { Button } from '@/components/ui/Button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Skeleton } from '@/components/ui/Skeleton';
+
+export default function AuditsExplorePage() {
+  const { data: audits, isLoading, isError, error } = useAudits();
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">AI Competitor Auditor</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Upload documents and let AI generate comprehensive competitor insights.
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/dashboard/audits/new" className="gap-2">
+            <FiPlus className="h-4 w-4" />
+            New Audit
+          </Link>
+        </Button>
+      </div>
+
+      {/* Error */}
+      {isError && (
+        <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+          <p className="text-sm font-medium text-destructive">
+            {(error as { message?: string })?.message || 'Failed to load audits.'}
+          </p>
+        </div>
+      )}
+
+      {/* Content */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="rounded-xl border bg-card p-6 shadow-sm space-y-4">
+              <div className="flex gap-4">
+                <Skeleton className="h-10 w-10 rounded-lg" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-3 w-2/3" />
+                </div>
+              </div>
+              <Skeleton className="h-8 w-full" />
+            </div>
+          ))}
+        </div>
+      ) : audits?.length === 0 ? (
+        <EmptyState
+          icon={<FiFileText className="h-10 w-10 text-muted-foreground" />}
+          title="No audits found"
+          description="Upload a competitor report, SEC filing, or article to generate your first AI audit."
+          action={
+            <Button asChild>
+              <Link href="/dashboard/audits/new">
+                <FiPlus className="mr-2 h-4 w-4" />
+                Generate AI Audit
+              </Link>
+            </Button>
+          }
+        />
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {audits?.map((audit) => (
+            <AuditCard key={audit._id} audit={audit} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

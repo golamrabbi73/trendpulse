@@ -17,8 +17,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TrendPulse AI",
-  description: "Advanced trend analysis and insights",
+  title: {
+    template: "%s | TrendPulse AI",
+    default: "TrendPulse AI - Advanced Trend Analysis",
+  },
+  description: "Advanced trend analysis and insights platform for businesses.",
+  keywords: ["trend analysis", "ai", "business insights", "analytics"],
+  authors: [{ name: "TrendPulse Team" }],
+  creator: "TrendPulse AI",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://trendpulse.ai",
+    title: "TrendPulse AI - Advanced Trend Analysis",
+    description: "Advanced trend analysis and insights platform for businesses.",
+    siteName: "TrendPulse AI",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TrendPulse AI - Advanced Trend Analysis",
+    description: "Advanced trend analysis and insights platform for businesses.",
+  },
 };
 
 export default function RootLayout({

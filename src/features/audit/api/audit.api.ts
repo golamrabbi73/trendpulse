@@ -23,13 +23,12 @@ export const auditApi = {
   },
 
   generate: async (data: GenerateAuditInput, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void): Promise<Audit> => {
-    const formData = new FormData();
-    formData.append('title', data.title);
-    formData.append('file', data.file);
-
-    const res = await apiClient.post<unknown, BackendResponse<Audit>>(
+    const res = await apiClient.postForm<unknown, BackendResponse<Audit>>(
       '/audits/generate',
-      formData,
+      {
+        title: data.title,
+        file: data.file,
+      },
       {
         onUploadProgress,
         timeout: 120000,

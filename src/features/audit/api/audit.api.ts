@@ -31,6 +31,7 @@ export const auditApi = {
       '/audits/generate',
       formData,
       {
+        headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress,
         timeout: 120000,
       }

@@ -41,10 +41,10 @@ export const useGenerateAudit = () => {
       queryClient.invalidateQueries({ queryKey: AUDIT_KEYS.lists() });
       toast.success('AI Audit generated successfully');
     },
-    onError: (error: unknown) => {
+    onError: (error: any) => {
       let message = 'Failed to generate audit. Please try again.';
-      if (error instanceof AxiosError) {
-        message = error.response?.data?.message || message;
+      if (error?.message) {
+        message = error.message;
       } else if (error instanceof Error) {
         message = error.message;
       }

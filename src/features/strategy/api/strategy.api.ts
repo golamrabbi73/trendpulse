@@ -20,6 +20,7 @@ export const strategyApi = {
     const res = await apiClient.post<unknown, BackendResponse<Strategy>>(
       `${BASE}/generate`,
       payload,
+      { timeout: 120000 }, // AI generation can take 20-60s; override the 10s global default
     );
     return res.data;
   },
@@ -28,6 +29,8 @@ export const strategyApi = {
   regenerate: async (id: string): Promise<Strategy> => {
     const res = await apiClient.post<unknown, BackendResponse<Strategy>>(
       `${BASE}/${id}/regenerate`,
+      undefined,
+      { timeout: 120000 }, // AI generation can take 20-60s; override the 10s global default
     );
     return res.data;
   },
